@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"github.com/joho/godotenv"
 )
 
 // CanvasConfig holds Canvas API configuration
@@ -15,6 +16,9 @@ type CanvasConfig struct {
 }
 
 func main() {
+	// Load .env file
+	godotenv.Load()
+
 	// Configuration
 	baseURL := os.Getenv("CANVAS_URL")   
 	token := os.Getenv("CANVAS_TOKEN")   // Canvas API token
@@ -46,14 +50,13 @@ func main() {
 	fmt.Println("\n---\n")
 
 	// Example: Get list of courses
-	coursesList, err := callCanvasAPI(config, "/api/v1/courses")
+	courses, err := callCanvasAPI(config, "/api/v1/courses")
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		os.Exit(1)
 	}
-
 	fmt.Println("Courses:")
-	fmt.Println(coursesList)
+	fmt.Println(courses)
 }
 
 // callCanvasAPI makes an HTTP GET request to Canvas API with token authentication
