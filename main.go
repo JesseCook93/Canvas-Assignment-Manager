@@ -14,7 +14,6 @@ import (
 	"strings"
 	"text/tabwriter"
 	"time"
-
 	"github.com/joho/godotenv"
 )
 
@@ -75,17 +74,23 @@ func main() {
 		Token:   token,
 	}
 
+	// Displays message based on mode
+	if *submit {
+		fmt.Println("Canvas Assignments Manager (submit mode)")
+		fmt.Println("Press Ctrl+C to exit at any time")
+		fmt.Println()
+	} else {
+		fmt.Println("Canvas Assignments Manager")
+		fmt.Println("Press Ctrl+C to exit at any time")
+		fmt.Println()
+	}
+
 	// Get all courses
-	fmt.Println("==================================")
-	fmt.Println("=== Canvas Assignments Manager ===")
-	fmt.Println("==================================")
-	fmt.Println()
 	courses, err := getCourses(config)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 		os.Exit(1)
 	}
-
 	if len(courses) == 0 {
 		fmt.Println("No available courses found.")
 		return
@@ -172,7 +177,7 @@ func main() {
 
 // displayAssignments shows all upcoming assignments in a table
 func displayAssignments(assignments []Assignment) {
-	fmt.Printf("Found %d upcoming assignments:\n\n", len(assignments))
+	fmt.Printf("You have %d upcoming, unsubmitted assignments:\n\n", len(assignments))
 	
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
 	fmt.Fprintln(w, "ASSIGNMENT NAME\tCOURSE NAME\tDUE DATE")
@@ -189,11 +194,12 @@ func displayAssignments(assignments []Assignment) {
 		fmt.Fprintf(w, "%s\t%s\t%s\n", assignment.Name, assignment.CourseName, dueDate)
 	}
 	w.Flush()
+	fmt.Println("\n\nTo submit an assignment, run the program with the -submit flag: \n\tgo run main.go -submit");
 }
 
 // handleSubmission allows user to select and submit an assignment
 func handleSubmission(config CanvasConfig, assignments []Assignment) {
-	fmt.Printf("Found %d upcoming assignments:\n\n", len(assignments))
+	fmt.Printf("You have %d upcoming, unsubmitted assignments:\n\n", len(assignments))
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
 	fmt.Fprintln(w, "#\tASSIGNMENT NAME\tCOURSE NAME\tDUE DATE")
@@ -213,7 +219,7 @@ func handleSubmission(config CanvasConfig, assignments []Assignment) {
 
 	// Get user selection
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Select assignment to submit (number): ")
+	fmt.Print("Select assignment to submit ('#' column above): ")
 	input, _ := reader.ReadString('\n')
 	input = strings.TrimSpace(input)
 
@@ -290,8 +296,6 @@ func submitAssignment(config CanvasConfig, courseID, assignmentID int, submissio
 	} else if submissionType == "online_url" {
 		data.Set("submission[url]", body)
 	} else if submissionType == "online_upload" {
-		// For file uploads, we'd need multipart/form-data handling
-		// For now, we'll use the text body approach
 		data.Set("submission[body]", body)
 	}
 
