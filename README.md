@@ -12,9 +12,10 @@ For GO:
 https://go.dev/dl/
 
 # Setup Instructions
-Clone this repository in a desired location with the following command:
+Clone and enter this repository with the following commands:
 
     git clone https://github.com/JesseCook93/Canvas-Assignment-Manager.git
+    cd ./Canvas-Assignment-Manager
 
 In that same directory, run this command to install a needed dependency:
 
