@@ -14,23 +14,23 @@ https://go.dev/dl/
 # Setup Instructions
 Clone this repository in a desired location with the following command:
 
-    $ git clone https://github.com/JesseCook93/Canvas-Assignment-Manager.git
+    git clone https://github.com/JesseCook93/Canvas-Assignment-Manager.git
 
 In that same directory, run this command to install a needed dependency:
 
-    $ go get github.com/joho/godotenv
+    go get github.com/joho/godotenv
 
 Next, a .env file needs to be created, open ".env.example" and follow the steps in that file.
 
 Afterwards, you are ready to use this tool! Here are some usage commands to try from the cloned directory (Outputs will be different for you):
 
-    $ go run main.go
+    go run main.go
 
 Expected Output (Cropped):
 
 ![Output](assets/ExampleOutput.png)
 
-    $ go run main.go -submit
+    go run main.go -submit
 
 Expected Output (Cropped):
 
